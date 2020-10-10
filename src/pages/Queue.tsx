@@ -85,10 +85,18 @@ const Queue: React.FC<QueueProps> = () => {
 							</span>
 						</h1>
 						<p style={{ marginTop: 0, opacity: 0.5 }}>
-							You can close the window & we'll call you!
+							This might take a while, you can close this window if you want.
 						</p>
 					</>
-				) : null}
+				) : (
+					<>
+						<h1 style={{ marginBottom: 5 }}>Queue up to begin!</h1>
+						<p style={{ marginTop: 0, opacity: 0.5 }}>
+							Join the match queue, & we'll match you with a stranger to talk
+							to.
+						</p>
+					</>
+				)}
 				{!queue ? (
 					<button
 						className="Button"
