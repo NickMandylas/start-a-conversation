@@ -3,6 +3,7 @@ import "firebase/auth";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
+import "yup-phone";
 import { Link, useHistory } from "react-router-dom";
 
 interface LoginProps {}
@@ -35,9 +36,7 @@ const Login: React.FC<LoginProps> = () => {
 	};
 
 	const loginSchema = Yup.object().shape({
-		mobileNumber: Yup.string()
-			.min(12, "Not a valid number")
-			.required("Required"),
+		mobileNumber: Yup.string().phone().required(),
 	});
 
 	const formik = useFormik({
@@ -54,12 +53,7 @@ const Login: React.FC<LoginProps> = () => {
 	});
 
 	if (captcha) {
-		return (
-			<div
-				id="recaptcha"
-				style={{ marginTop: "10px", marginBottom: "5px" }}
-			></div>
-		);
+		return <div id="recaptcha" />;
 	}
 
 	if (verify) {
