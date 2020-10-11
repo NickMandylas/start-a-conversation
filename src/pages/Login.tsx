@@ -55,12 +55,10 @@ const Login: React.FC<LoginProps> = () => {
 
 	if (captcha) {
 		return (
-			<div className="App">
-				<div
-					id="recaptcha"
-					style={{ marginTop: "10px", marginBottom: "5px" }}
-				></div>
-			</div>
+			<div
+				id="recaptcha"
+				style={{ marginTop: "10px", marginBottom: "5px" }}
+			></div>
 		);
 	}
 
@@ -69,35 +67,33 @@ const Login: React.FC<LoginProps> = () => {
 	}
 
 	return (
-		<div className="App">
-			<form onSubmit={formik.handleSubmit}>
-				<label className="Label" htmlFor="Mobile Number">
-					Mobile #
-				</label>
-				<input
-					id="mobileNumber"
-					name="mobileNumber"
-					type="tel"
-					onChange={formik.handleChange}
-					value={formik.values.mobileNumber}
-					className="Input"
-					style={{ display: "block" }}
-				/>
-				{formik.errors.mobileNumber && (
-					<p className="Error">Can't proceed without a number!</p>
-				)}
-				<div>
-					<Link to="/">
-						<button className="Button" style={{ opacity: 0.5 }}>
-							Back
-						</button>
-					</Link>
-					<button type="submit" className="Button" style={{ marginLeft: 10 }}>
-						Submit
+		<form onSubmit={formik.handleSubmit}>
+			<label className="Label" htmlFor="Mobile Number">
+				Mobile #
+			</label>
+			<input
+				id="mobileNumber"
+				name="mobileNumber"
+				type="tel"
+				onChange={formik.handleChange}
+				value={formik.values.mobileNumber}
+				className="Input"
+				style={{ display: "block" }}
+			/>
+			{formik.errors.mobileNumber && (
+				<p className="Error">Can't proceed without a number!</p>
+			)}
+			<div>
+				<Link to="/">
+					<button className="Button" style={{ opacity: 0.5 }}>
+						Back
 					</button>
-				</div>
-			</form>
-		</div>
+				</Link>
+				<button type="submit" className="Button" style={{ marginLeft: 10 }}>
+					Submit
+				</button>
+			</div>
+		</form>
 	);
 };
 
@@ -123,8 +119,8 @@ const Verification: React.FC<VericationProps> = (props) => {
 	});
 
 	return (
-		<div className="App">
-			<h3>We sent you a text!</h3>
+		<>
+			<h1>We sent you a text!</h1>
 			<form onSubmit={formik.handleSubmit}>
 				<label className="Label" htmlFor="OTP Code">
 					Verification Code
@@ -145,7 +141,7 @@ const Verification: React.FC<VericationProps> = (props) => {
 					Submit
 				</button>
 			</form>
-		</div>
+		</>
 	);
 };
 

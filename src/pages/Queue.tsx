@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
+import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 interface QueueProps {}
 
@@ -62,58 +62,64 @@ const Queue: React.FC<QueueProps> = () => {
 	});
 
 	if (loading) {
-		return (
-			<div className="App">
-				<h1>Loading...</h1>
-			</div>
-		);
+		return <h1>Loading...</h1>;
 	}
 
 	if (match) {
-		return <h1>Match found! Expect a call soon.</h1>;
+		return (
+			<>
+				<h1>Match found! Expect a call soon.</h1>
+				<p style={{ marginTop: 0, opacity: 0.5, padding: "0 20px 0 20px" }}>
+					You'll placed into a conference call with your match. You'll be able
+					to re-queue in 5 mins.
+				</p>
+			</>
+		);
 	}
 
-	return (
-		<div className="App">
-			<div style={{ display: "inline" }}>
-				{queue ? (
-					<>
-						<h1 style={{ marginBottom: 5 }}>
-							finding your new friend{" "}
-							<span role="img" aria-label="searching">
-								🔎
-							</span>
-						</h1>
-						<p style={{ marginTop: 0, opacity: 0.5 }}>
-							This might take a while, you can close this window if you want.
-						</p>
-					</>
-				) : (
-					<>
-						<h1 style={{ marginBottom: 5 }}>Queue up to begin!</h1>
-						<p style={{ marginTop: 0, opacity: 0.5 }}>
-							Join the match queue, & we'll match you with a stranger to talk
-							to.
-						</p>
-					</>
-				)}
-				{!queue ? (
-					<button
-						className="Button"
-						onClick={() => auth.signOut()}
-						style={{ opacity: 0.5 }}
-					>
-						Logout
-					</button>
-				) : null}
+	if (queue) {
+		return (
+			<>
+				<h1 style={{ marginBottom: 5 }}>
+					finding your new friend{" "}
+					<span role="img" aria-label="searching">
+						🔎
+					</span>
+				</h1>
+				<p style={{ marginTop: 0, opacity: 0.5, padding: "0 20px 0 20px" }}>
+					This might take a while, you can close this window if you want.
+				</p>
 				<button
 					className="Button"
 					onClick={queueHandler}
 					style={{ marginLeft: 10 }}
 				>
-					{queue ? "Cancel" : "Queue"}
+					Cancel
 				</button>
-			</div>
+			</>
+		);
+	}
+
+	return (
+		<div style={{ display: "inline" }}>
+			<h1 style={{ marginBottom: 5 }}>Queue up to begin!</h1>
+			<p style={{ marginTop: 0, opacity: 0.5, padding: "0 20px 0 20px" }}>
+				Join the match queue, & we'll match you with a stranger to talk to.
+			</p>
+			<button
+				className="Button"
+				onClick={() => auth.signOut()}
+				style={{ opacity: 0.5 }}
+			>
+				Logout
+			</button>
+			<button
+				className="Button"
+				onClick={queueHandler}
+				style={{ marginLeft: 10 }}
+			>
+				Queue
+			</button>
 		</div>
 	);
 };

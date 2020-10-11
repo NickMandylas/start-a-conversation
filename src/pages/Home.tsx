@@ -6,7 +6,7 @@ interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
 	return (
-		<div className="App">
+		<>
 			<img src={logo} className="App-logo" alt="logo" />
 			<h1 style={{ padding: "20px 40px 10px 40px" }}>
 				Needing a conversation? It's only{" "}
@@ -15,7 +15,7 @@ const Home: React.FC<HomeProps> = () => {
 			<Link to="/queue">
 				<button className="Button">Get Started</button>
 			</Link>
-		</div>
+		</>
 	);
 };
 

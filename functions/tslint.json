@@ -4,7 +4,8 @@
 	"rules": {
 		"indent": [true, "tabs"],
 		"no-console": false,
-		"curly": false
+		"curly": false,
+		"no-var-requires": false
 	},
 	"jsRules": {
 		"indent": [true, "tabs"]
