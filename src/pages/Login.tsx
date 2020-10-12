@@ -36,7 +36,9 @@ const Login: React.FC<LoginProps> = () => {
 	};
 
 	const loginSchema = Yup.object().shape({
-		mobileNumber: Yup.string().phone().required(),
+		mobileNumber: Yup.string()
+			.phone("AU", true, "Need a phone number! Aussie's only 🇦🇺")
+			.required(),
 	});
 
 	const formik = useFormik({
@@ -74,10 +76,10 @@ const Login: React.FC<LoginProps> = () => {
 				className="Input"
 				style={{ display: "block" }}
 			/>
-			{formik.errors.mobileNumber && (
-				<p className="Error">Can't proceed without a number!</p>
-			)}
 			<div>
+				{formik.errors.mobileNumber && (
+					<p className="Error">{formik.errors.mobileNumber}</p>
+				)}
 				<Link to="/">
 					<button className="Button" style={{ opacity: 0.5 }}>
 						Back

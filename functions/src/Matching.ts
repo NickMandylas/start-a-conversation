@@ -11,7 +11,12 @@ let database = admin.database();
 // Matching
 exports.Matching = functions.database
 	.ref("matchmaking/{userId}")
-	.onCreate((_, context) => {
+	.onCreate(async (snapshot, context) => {
+		if (!(await isAustralian(context.auth.uid))) {
+			snapshot.ref.set(null);
+			return null;
+		}
+
 		let matchId = generateMatchId();
 
 		database
@@ -42,8 +47,11 @@ exports.Matching = functions.database
 						)
 							return matchmaking;
 
+						const time = Date.now().toString();
 						matchmaking[context.params.userId].status = matchId;
+						matchmaking[context.params.userId].time = time;
 						matchmaking[secondUser.key].status = matchId;
+						matchmaking[secondUser.key].time = time;
 						return matchmaking;
 					})
 					.then((result) => {
@@ -92,4 +100,12 @@ function generateMatchId() {
 			Math.floor(Math.random() * possibleChars.length)
 		);
 	return matchId;
+}
+
+async function isAustralian(uid: string): Promise<Boolean> {
+	const requestNumber = (await admin.auth().getUser(uid)).phoneNumber;
+
+	const isAustralian = requestNumber.substring(0, 3) === "+61";
+
+	return isAustralian;
 }
