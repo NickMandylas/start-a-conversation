@@ -14,23 +14,22 @@ type UserStatus = {
 const auth = firebase.auth();
 
 const Queue: React.FC<QueueProps> = () => {
-	const [loading, setLoading] = useState(true);
-	const [queue, setQueue] = useState(false);
-	const [match, setMatch] = useState(false);
+	const [status, setStatus] = useState("loading");
 	const [user] = useAuthState(auth);
 
 	var dbRef = firebase.database().ref(`matchmaking/${user?.uid}`);
 
 	const queueHandler = () => {
-		setQueue(!queue);
-		if (queue) {
+		if (status === "in-queue") {
 			dbRef.set(null);
+			setStatus("idle");
 		} else {
 			const status = {
 				status: "in-queue",
 				time: Date.now().toString(),
 			};
 			dbRef.set(status);
+			setStatus("in-queue");
 		}
 	};
 
@@ -40,18 +39,13 @@ const Queue: React.FC<QueueProps> = () => {
 
 			if (status) {
 				if (status.status === "in-queue") {
-					setQueue(true);
-					setMatch(false);
+					setStatus("in-queue");
 				} else {
-					setQueue(false);
-					setMatch(true);
+					setStatus("match");
 				}
 			} else {
-				setQueue(false);
-				setMatch(false);
+				setStatus("idle");
 			}
-
-			setLoading(false);
 		}
 
 		dbRef.on("value", handleValueChange);
@@ -61,11 +55,11 @@ const Queue: React.FC<QueueProps> = () => {
 		};
 	});
 
-	if (loading) {
+	if (status === "loading") {
 		return <h1>Loading...</h1>;
 	}
 
-	if (match) {
+	if (status === "match") {
 		return (
 			<>
 				<h1>Match found! Expect a call soon.</h1>
@@ -77,7 +71,7 @@ const Queue: React.FC<QueueProps> = () => {
 		);
 	}
 
-	if (queue) {
+	if (status === "in-queue") {
 		return (
 			<>
 				<h1 style={{ marginBottom: 5 }}>
