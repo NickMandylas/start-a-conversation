@@ -10,8 +10,7 @@ interface LoginProps {}
 
 const Login: React.FC<LoginProps> = () => {
 	const history = useHistory();
-	const [captcha, setCaptcha] = useState(false);
-	const [verify, setVerify] = useState(false);
+	const [status, setStatus] = useState<string | null>(null);
 	const [OTP, setOTP] = useState<firebase.auth.ConfirmationResult>();
 
 	const handleLogin = async (mobileNumber: string) => {
@@ -21,8 +20,7 @@ const Login: React.FC<LoginProps> = () => {
 			.signInWithPhoneNumber(mobileNumber, captcha);
 
 		setOTP(sendCode);
-		setCaptcha(false);
-		setVerify(true);
+		setStatus("verify");
 	};
 
 	const handleVerification = (code: string) => {
@@ -47,18 +45,18 @@ const Login: React.FC<LoginProps> = () => {
 		},
 		validationSchema: loginSchema,
 		onSubmit: (values) => {
-			setCaptcha(true);
+			setStatus("captcha");
 			handleLogin(values.mobileNumber);
 		},
 		validateOnBlur: true,
 		validateOnChange: false,
 	});
 
-	if (captcha) {
+	if (status === "captcha") {
 		return <div id="recaptcha" />;
 	}
 
-	if (verify) {
+	if (status === "verify") {
 		return <Verification code={(e) => handleVerification(e)} />;
 	}
 
